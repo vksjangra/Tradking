@@ -1,0 +1,63 @@
+{% extends 'Tradking/layout.html' %}
+
+{% block body %}
+
+    {% load static %}
+
+    
+    {% if user.is_authenticated %}
+
+        <div class="jumbotron py-4 my-0">
+            <button id="trade-form-button" class="btn btn-primary">Add New Trade</button>
+            <form id="trade-form" style="display: none;" class="form-group mt-3" method="POST" action="{% url 'new_trade' %}">
+                {% csrf_token %}
+                <div class="ui-widget">
+                    <input required id="exchangeAuto" name="stock_name" type="text" class="form-control" placeholder="Stock Name">
+                </div>
+                <div class="form-inline mt-5">
+                    <label class="col-sm-1 col-form-lable" for="entry">Entry</label>
+                    <input id="entry" name="entry" required class="col-sm-4 form-control" type="number" step="0.001" placeholder="₹">
+                    <label class="col-sm-1 col-form-lable" for="quantity">Quantity</label>
+                    <input id="quantity" name="quantity" required class="col-sm-4 form-control" type="number" placeholder="Quantity">
+                </div>
+                <div class="form-inline mt-2">
+                    <label class="col-sm-1 col-form-lable" for="target">Target</label>
+                    <input id="target" name="target" required class="col-sm-4 form-control" type="number" step="0.001" placeholder="₹">
+                    <label class="col-sm-1 col-form-lable" for="stoploss">Stoploss</label>
+                    <input id="stoploss" name="stoploss" required class="col-sm-4 form-control" type="number" step="0.001" placeholder="₹">
+                </div>
+                <div class="form-inline mx-5 mt-5">
+                    <input type="submit" class="btn btn-primary" value="Add">
+                    <button type="button" id="trade-form-cancel" class="btn ml-4 btn-danger">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="jumbotron mx-3 my-0 py-3 text-light bg-dark bg-gradient-dark">
+            <span><b>Last  </b></span>
+            <select id="list_trades">
+                <option value="10" selected>10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="200">200</option>
+                <option value="300">300</option>
+                <option value="500">500</option>
+                <option value="1000">1000</option>
+                <option value="10000">All Trades</option>
+            </select>
+            <span class="mr-5"><b>Trades</b></span>
+            <span class="ml-5 mr-2"><b>Or Select Range</b></span>
+            <input type="text" class="rounded" name="daterange" value="" />
+        </div>
+
+        <div id="load_trades">   
+        </div>
+    
+    {% endif %}
+        
+    <script src="{% static 'Tradking/index.js' %}"></script>
+    <script>load_trades();</script>
+
+{% endblock body %}
